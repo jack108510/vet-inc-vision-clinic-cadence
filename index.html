@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vet INC FeeWatch — Pricing Cadence for Independent Clinics</title>
+  <!-- VISION-CONCEPT-03 -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #F6F3EE;
+      --bg-warm:     #EDE8E0;
+      --surface:     #FEFCF9;
+      --border:      #DDD5C8;
+      --border-warm: #C8BFB0;
+
+      --text:        #1E1B18;
+      --text-mid:    #5C5347;
+      --text-dim:    #8C8075;
+
+      --green:       #2B6645;
+      --green-hi:    #3D8A5E;
+      --green-pale:  #EBF3EE;
+      --green-rule:  #A8CCBA;
+
+      --warm:        #8B5E3C;
+      --warm-pale:   #F5ECE4;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--green-hi);
+      outline-offset: 3px; border-radius: 2px;
+    }
+
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ---- Nav ---- */
+    .site-nav {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1120px; margin: 0 auto;
+      padding: 0 1.75rem;
+      display: flex; align-items: center;
+      justify-content: space-between; height: 60px; gap: 1.5rem;
+    }
+    .nav-wordmark {
+      font-size: 0.9375rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text); flex-shrink: 0;
+    }
+    .nav-links {
+      display: flex; list-style: none; gap: 1.875rem;
+    }
+    .nav-links a {
+      font-size: 0.8125rem; color: var(--text-mid);
+      letter-spacing: 0.03em; transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-cta {
+      flex-shrink: 0;
+      display: inline-flex; align-items: center;
+      padding: 0.45rem 1.2rem;
+      background: var(--green); color: #fff;
+      border-radius: 3px; font-size: 0.8125rem; font-weight: 600;
+      letter-spacing: 0.03em; transition: background 0.15s;
+    }
+    .nav-cta:hover { background: var(--green-hi); text-decoration: none; }
+    .nav-hamburger {
+      display: none; background: none;
+      border: 1px solid var(--border); color: var(--text);
+      padding: 0.35rem 0.55rem; border-radius: 3px;
+      cursor: pointer; font-size: 1.1rem; line-height: 1;
+    }
+    .nav-drawer {
+      display: none; flex-direction: column;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .nav-drawer a {
+      display: block; padding: 0.85rem 1.75rem;
+      color: var(--text-mid); font-size: 0.9375rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-drawer a:hover { background: var(--bg); text-decoration: none; }
+    .nav-drawer .nav-cta {
+      margin: 1rem 1.75rem; align-self: flex-start;
+      display: inline-flex;
+    }
+
+    @media (max-width: 740px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: block; }
+      .nav-drawer.is-open { display: flex; }
+    }
+
+    /* ---- Utility ---- */
+    .container {
+      max-width: 1120px; margin: 0 auto; padding: 0 1.75rem;
+    }
+    .ruled { border-top: 1px solid var(--border); }
+
+    /* ---- Hero ---- */
+    .hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 5.5rem 0 4rem;
+    }
+    .hero-inner {
+      max-width: 1120px; margin: 0 auto; padding: 0 1.75rem;
+    }
+    .product-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--green-rule);
+      background: var(--green-pale);
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px; margin-bottom: 1.75rem;
+    }
+    .product-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green); flex-shrink: 0;
+    }
+    .product-badge-text {
+      font-size: 0.69rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--green);
+    }
+    .hero h1 {
+      font-size: clamp(1.875rem, 4.5vw, 3rem);
+      font-weight: 700; line-height: 1.15;
+      letter-spacing: -0.022em;
+      max-width: 720px; margin-bottom: 1.375rem;
+    }
+    .hero-sub {
+      font-size: 1.0625rem; color: var(--text-mid);
+      max-width: 560px; line-height: 1.75; margin-bottom: 2.5rem;
+    }
+    .btn-green {
+      display: inline-flex; align-items: center;
+      padding: 0.75rem 1.875rem;
+      background: var(--green); color: #fff;
+      border-radius: 3px; font-size: 0.9375rem; font-weight: 600;
+      letter-spacing: 0.02em; transition: background 0.15s;
+    }
+    .btn-green:hover { background: var(--green-hi); text-decoration: none; }
+
+    .hero-qualifier {
+      margin-top: 1.25rem;
+      font-size: 0.8125rem; color: var(--text-dim); line-height: 1.55;
+    }
+
+    /* ---- Section shell ---- */
+    .section {
+      padding: 4.5rem 0;
+    }
+    .section-label {
+      font-size: 0.69rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 1rem;
+    }
+    .section-heading {
+      font-size: clamp(1.375rem, 2.75vw, 1.875rem);
+      font-weight: 700; letter-spacing: -0.018em;
+      line-height: 1.22; margin-bottom: 1rem;
+    }
+    .section-body {
+      color: var(--text-mid); max-width: 600px;
+      line-height: 1.75; margin-bottom: 2.5rem;
+    }
+
+    /* ---- Cadence rhythm ---- */
+    .cadence-list {
+      display: flex; flex-direction: column; gap: 0;
+      border: 1px solid var(--border);
+    }
+    .cadence-item {
+      display: flex; gap: 0; align-items: stretch;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .cadence-item:last-child { border-bottom: none; }
+    .cadence-marker {
+      flex-shrink: 0; width: 4px;
+      background: var(--green-pale);
+      border-right: 1px solid var(--green-rule);
+    }
+    .cadence-item:nth-child(even) .cadence-marker {
+      background: var(--bg-warm);
+    }
+    .cadence-content {
+      padding: 1.5rem 1.875rem;
+      display: flex; gap: 1.5rem; align-items: flex-start;
+    }
+    .cadence-num {
+      flex-shrink: 0;
+      font-size: 1.5rem; font-weight: 800;
+      color: var(--border-warm); line-height: 1;
+      min-width: 2.25rem;
+    }
+    .cadence-title {
+      font-size: 0.9375rem; font-weight: 700;
+      margin-bottom: 0.35rem; color: var(--text);
+    }
+    .cadence-desc {
+      font-size: 0.875rem; color: var(--text-mid); line-height: 1.65;
+    }
+
+    @media (max-width: 560px) {
+      .cadence-content { padding: 1.25rem 1.25rem; gap: 1rem; }
+      .cadence-num { font-size: 1.25rem; }
+    }
+
+    /* ---- FeeWatch explained ---- */
+    .feewatch-section {
+      background: var(--green-pale);
+      border-top: 1px solid var(--green-rule);
+      border-bottom: 1px solid var(--green-rule);
+      padding: 4.5rem 0;
+    }
+    .fw-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3.5rem; align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .fw-layout { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .fw-label {
+      font-size: 0.69rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 1rem;
+    }
+    .fw-heading {
+      font-size: clamp(1.375rem, 2.75vw, 1.875rem);
+      font-weight: 700; letter-spacing: -0.018em;
+      line-height: 1.22; margin-bottom: 1rem; color: var(--text);
+    }
+    .fw-body {
+      font-size: 0.9375rem; color: var(--text-mid);
+      line-height: 1.75; margin-bottom: 1.5rem;
+    }
+    .fw-caveat {
+      font-size: 0.8125rem; color: var(--text-dim); line-height: 1.6;
+      padding: 1rem 1.25rem;
+      border-left: 3px solid var(--green-rule);
+      background: rgba(255,255,255,0.55);
+    }
+    .fw-points {
+      list-style: none; display: flex; flex-direction: column; gap: 1.25rem;
+    }
+    .fw-point {
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .fw-point-icon {
+      flex-shrink: 0; margin-top: 0.125rem;
+      font-size: 1rem;
+    }
+    .fw-point-title {
+      font-size: 0.875rem; font-weight: 700;
+      margin-bottom: 0.25rem; color: var(--text);
+    }
+    .fw-point-desc {
+      font-size: 0.84375rem; color: var(--text-mid); line-height: 1.6;
+    }
+
+    /* ---- Practical tone row ---- */
+    .honest-row {
+      padding: 2.75rem 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-warm);
+    }
+    .honest-inner {
+      max-width: 1120px; margin: 0 auto; padding: 0 1.75rem;
+    }
+    .honest-inner p {
+      font-size: 0.9375rem; color: var(--text-mid); line-height: 1.7;
+      max-width: 720px;
+    }
+    .honest-inner strong { color: var(--text); }
+
+    /* ---- Enterprise secondary ---- */
+    .enterprise-section {
+      padding: 4.5rem 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .enterprise-band {
+      border: 1px solid var(--border);
+      display: flex; gap: 2rem; align-items: flex-start;
+      padding: 2rem 2.25rem; background: var(--bg);
+    }
+    .ent-icon {
+      flex-shrink: 0; margin-top: 0.2rem;
+      font-size: 1.25rem;
+    }
+    .ent-text h3 {
+      font-size: 0.9375rem; font-weight: 700; margin-bottom: 0.4rem;
+    }
+    .ent-text p {
+      font-size: 0.875rem; color: var(--text-mid); line-height: 1.65;
+    }
+    .ent-text a {
+      color: var(--green); font-weight: 600;
+    }
+
+    @media (max-width: 560px) {
+      .enterprise-band { flex-direction: column; gap: 1rem; }
+    }
+
+    /* ---- CTA ---- */
+    .cta-section {
+      padding: 5rem 0;
+      background: var(--green-pale);
+      border-top: 1px solid var(--green-rule);
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+      font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1rem;
+    }
+    .cta-section p {
+      color: var(--text-mid); max-width: 480px;
+      margin: 0 auto 2.5rem; line-height: 1.7;
+    }
+
+    /* ---- Footer ---- */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.875rem 1.75rem;
+      background: var(--bg-warm);
+    }
+    .footer-inner {
+      max-width: 1120px; margin: 0 auto;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 0.75rem;
+    }
+    .footer-word {
+      font-size: 0.8125rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid);
+    }
+    .footer-note { font-size: 0.79rem; color: var(--text-dim); }
+  </style>
+</head>
+<body>
+
+  <span class="visually-hidden">VISION-CONCEPT-03</span>
+
+  <!-- Navigation -->
+  <header>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <div class="nav-inner">
+        <a class="nav-wordmark" href="#" aria-label="Vet INC home">Vet INC</a>
+        <ul class="nav-links" role="list">
+          <li><a href="#cadence">The cadence</a></li>
+          <li><a href="#feewatch">FeeWatch</a></li>
+          <li><a href="#enterprise">Groups</a></li>
+        </ul>
+        <a class="nav-cta" href="mailto:hello@vetinc.ca">Get in touch</a>
+        <button
+          class="nav-hamburger"
+          id="nav-toggle"
+          aria-expanded="false"
+          aria-controls="nav-drawer"
+          aria-label="Open navigation menu"
+        >&#9776;</button>
+      </div>
+      <div class="nav-drawer" id="nav-drawer" role="navigation" aria-label="Mobile menu">
+        <a href="#cadence">The cadence</a>
+        <a href="#feewatch">FeeWatch</a>
+        <a href="#enterprise">Groups</a>
+        <a class="nav-cta" href="mailto:hello@vetinc.ca">Get in touch</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="product-badge">
+          <span class="product-badge-dot" aria-hidden="true"></span>
+          <span class="product-badge-text">FeeWatch by Vet INC</span>
+        </div>
+        <h1>Keep your fees current. Build a pricing rhythm that fits your practice.</h1>
+        <p class="hero-sub">
+          FeeWatch helps independent clinics stay on top of fee changes through a regular, manageable review routine&mdash;informed by the historical context in your own records.
+        </p>
+        <a class="btn-green" href="mailto:hello@vetinc.ca">Ask about FeeWatch</a>
+        <p class="hero-qualifier">
+          FeeWatch uses your clinic&rsquo;s own data to support better-informed decisions. It does not set prices automatically or guarantee specific outcomes.
+        </p>
+      </div>
+    </div>
+
+    <!-- The cadence -->
+    <div class="ruled">
+      <div class="container">
+        <section class="section" id="cadence" aria-labelledby="cadence-heading">
+          <p class="section-label">The practice</p>
+          <h2 class="section-heading" id="cadence-heading">A regular pricing review is a professional habit, not a project</h2>
+          <p class="section-body">
+            Most pricing problems in independent clinics come from the same place: fees go untouched for too long, then a one-time catch-up review is rushed. FeeWatch is built to support the opposite&mdash;a steady, manageable cadence.
+          </p>
+          <div class="cadence-list" role="list">
+            <div class="cadence-item" role="listitem">
+              <div class="cadence-marker" aria-hidden="true"></div>
+              <div class="cadence-content">
+                <span class="cadence-num" aria-hidden="true">1</span>
+                <div>
+                  <p class="cadence-title">Schedule a recurring review window</p>
+                  <p class="cadence-desc">Set aside time on a consistent schedule&mdash;quarterly, semi-annual, or whatever interval fits your practice. The goal is regularity, not frequency.</p>
+                </div>
+              </div>
+            </div>
+            <div class="cadence-item" role="listitem">
+              <div class="cadence-marker" aria-hidden="true"></div>
+              <div class="cadence-content">
+                <span class="cadence-num" aria-hidden="true">2</span>
+                <div>
+                  <p class="cadence-title">Pull historical context from FeeWatch</p>
+                  <p class="cadence-desc">FeeWatch analyses your clinic&rsquo;s own sales, revenue, and visit records to show how prior fee changes relate to your historical patterns. Context, not conclusions.</p>
+                </div>
+              </div>
+            </div>
+            <div class="cadence-item" role="listitem">
+              <div class="cadence-marker" aria-hidden="true"></div>
+              <div class="cadence-content">
+                <span class="cadence-num" aria-hidden="true">3</span>
+                <div>
+                  <p class="cadence-title">Review with your team, using real information</p>
+                  <p class="cadence-desc">Your pricing decisions involve clinical judgement, client relationships, and business priorities that no tool can weigh automatically. FeeWatch gives your team better information for that conversation.</p>
+                </div>
+              </div>
+            </div>
+            <div class="cadence-item" role="listitem">
+              <div class="cadence-marker" aria-hidden="true"></div>
+              <div class="cadence-content">
+                <span class="cadence-num" aria-hidden="true">4</span>
+                <div>
+                  <p class="cadence-title">Make the changes you decide to make</p>
+                  <p class="cadence-desc">Your team updates fees in your PMS. FeeWatch is not a price-setter and does not write to your system. Your decisions, your timing, your records.</p>
+                </div>
+              </div>
+            </div>
+            <div class="cadence-item" role="listitem">
+              <div class="cadence-marker" aria-hidden="true"></div>
+              <div class="cadence-content">
+                <span class="cadence-num" aria-hidden="true">5</span>
+                <div>
+                  <p class="cadence-title">Repeat on schedule</p>
+                  <p class="cadence-desc">The value of a cadence is consistency. The next review is already on the calendar before this one ends.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- FeeWatch explained -->
+    <section class="feewatch-section" id="feewatch" aria-labelledby="fw-heading">
+      <div class="container">
+        <div class="fw-layout">
+          <div>
+            <p class="fw-label">FeeWatch</p>
+            <h2 class="fw-heading" id="fw-heading">Historical context for every review</h2>
+            <p class="fw-body">
+              FeeWatch studies the records your clinic already generates&mdash;sales, revenue, visit volume&mdash;to build a historical picture of how your fees have changed and what surrounded those changes. It does not draw causal conclusions; it surfaces the patterns in your own data so your review is grounded rather than guesswork.
+            </p>
+            <div class="fw-caveat" role="note">
+              FeeWatch provides historical context drawn from your clinic&rsquo;s own records. It is not a causal proof of anything, does not make automatic pricing recommendations, and does not change any fees. Outcomes depend on many factors outside its scope.
+            </div>
+          </div>
+          <ul class="fw-points" aria-label="What FeeWatch does">
+            <li class="fw-point">
+              <span class="fw-point-icon" aria-hidden="true">&#128200;</span>
+              <div>
+                <p class="fw-point-title">Your data, not benchmarks</p>
+                <p class="fw-point-desc">FeeWatch works with your clinic&rsquo;s own records. There are no external comparisons, industry averages, or manufactured metrics.</p>
+              </div>
+            </li>
+            <li class="fw-point">
+              <span class="fw-point-icon" aria-hidden="true">&#128336;</span>
+              <div>
+                <p class="fw-point-title">Historical patterns in context</p>
+                <p class="fw-point-desc">See how fee changes have related to revenue and visit trends over time in your own practice, ahead of your review conversation.</p>
+              </div>
+            </li>
+            <li class="fw-point">
+              <span class="fw-point-icon" aria-hidden="true">&#9744;</span>
+              <div>
+                <p class="fw-point-title">Supports the decision-maker</p>
+                <p class="fw-point-desc">FeeWatch gives your team a better starting point. The judgement and authority to change fees stays with you.</p>
+              </div>
+            </li>
+            <li class="fw-point">
+              <span class="fw-point-icon" aria-hidden="true">&#128197;</span>
+              <div>
+                <p class="fw-point-title">Built for the review cadence</p>
+                <p class="fw-point-desc">Designed to sit comfortably inside a recurring review workflow, not as a one-time audit or an always-on alert system.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Practical honesty row -->
+    <div class="honest-row">
+      <div class="honest-inner">
+        <p>
+          <strong>What this is, plainly:</strong> FeeWatch adds historical context to a process your team already owns. A regular review cadence with better information is more likely to produce sensible outcomes than an infrequent review without it&mdash;but the tool does not cause those outcomes, and no pricing tool should claim otherwise.
+        </p>
+      </div>
+    </div>
+
+    <!-- Enterprise secondary -->
+    <section class="enterprise-section" id="enterprise" aria-labelledby="ent-heading">
+      <div class="container">
+        <p class="section-label">For larger groups</p>
+        <h2 class="section-heading" id="ent-heading">Operating a multi-site group?</h2>
+        <p class="section-body">
+          Vet INC also builds pricing operations infrastructure for corporate veterinary groups and multi-site operators who need a structured, audited workflow for implementing approved fee changes at scale.
+        </p>
+        <div class="enterprise-band">
+          <span class="ent-icon" aria-hidden="true">&#127970;</span>
+          <div class="ent-text">
+            <h3>Enterprise pricing workflow</h3>
+            <p>
+              Authorization, PMS catalogue mapping, exception management, rollout status, and audit history for groups that manage pricing across multiple clinic locations. Production PMS writeback is planned and contractually governed. <a href="mailto:hello@vetinc.ca">Contact us to learn more &rarr;</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <h2 id="cta-heading">Ready to build a better pricing habit?</h2>
+      <p>Tell us about your practice. We&rsquo;ll explain what FeeWatch can offer and whether it&rsquo;s a practical fit for how you work.</p>
+      <a class="btn-green" href="mailto:hello@vetinc.ca">hello@vetinc.ca</a>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-word">Vet INC</span>
+      <p class="footer-note">Veterinary pricing operations &mdash; Canada &amp; North America</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var toggle = document.getElementById('nav-toggle');
+      var drawer = document.getElementById('nav-drawer');
+      if (!toggle || !drawer) return;
+
+      toggle.addEventListener('click', function () {
+        var open = drawer.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+      });
+
+      drawer.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          drawer.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Open navigation menu');
+        });
+      });
+    }());
+  </script>
+
+</body>
+</html>
